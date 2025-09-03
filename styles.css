@@ -55,6 +55,9 @@ html {
     background: var(--bg-primary);
     color: #ffffff; /* Fallback */
     color: var(--text-primary);
+    height: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
 }
 
 body {
@@ -68,6 +71,9 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    min-height: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
 }
 
 /* Improved smooth scrolling with reduced motion support */
@@ -133,7 +139,8 @@ button, .cta-button, .booking-button, .partnership-button, .help-button {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100vh; /* Use vh instead of % for better mobile support */
+    height: 100vh; /* fallback */
+    height: 100dvh; /* dynamic viewport height for mobile */
     z-index: 1000;
     pointer-events: none;
     transition: opacity 0.5s ease;
@@ -232,6 +239,10 @@ button, .cta-button, .booking-button, .partnership-button, .help-button {
     display: flex;
     align-items: center;
     padding: var(--mobile-padding);
+    padding-top: calc(var(--mobile-padding) + env(safe-area-inset-top, 0px));
+    padding-bottom: calc(var(--mobile-padding) + env(safe-area-inset-bottom, 0px));
+    padding-left: calc(var(--mobile-padding) + env(safe-area-inset-left, 0px));
+    padding-right: calc(var(--mobile-padding) + env(safe-area-inset-right, 0px));
     
   flex-direction: column;   /* stack items vertically */
   align-items: center;      /* center horizontally */
@@ -450,7 +461,6 @@ button, .cta-button, .booking-button, .partnership-button, .help-button {
   text-align: center;       /* center text inside */
   width: 100%;
           /* optional, full screen height */
-}
 }
 
 @media (min-width: 768px) {
