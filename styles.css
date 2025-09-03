@@ -141,6 +141,7 @@ button, .cta-button, .booking-button, .partnership-button, .help-button {
     width: 100%;
     height: 100vh; /* fallback */
     height: 100dvh; /* dynamic viewport height for mobile */
+    height: calc(var(--vh) * 100); /* JS-backed unit for older browsers */
     z-index: 1000;
     pointer-events: none;
     transition: opacity 0.5s ease;
@@ -232,6 +233,7 @@ button, .cta-button, .booking-button, .partnership-button, .help-button {
 .hero-section {
     min-height: 100vh;
     min-height: 100dvh; /* Dynamic viewport height for mobile */
+    min-height: calc(var(--vh) * 100); /* JS-backed unit for older browsers */
     background: linear-gradient(180deg, #000000 0%, rgba(255, 0, 0, 0.1) 100%); /* Fallback */
     background: var(--gradient-hero);
     position: relative;
@@ -1709,4 +1711,61 @@ a:focus,
 .success {
     border: 2px solid #00ff00 !important;
     background: rgba(0, 255, 0, 0.1) !important;
+}
+
+/* Viewport utility: use CSS var --vh set by JS; default to 1dvh */
+:root {
+    --vh: 1dvh;
+    --mobile-cta-height: 0px;
+}
+
+/* Sticky Mobile CTA Bar */
+.mobile-cta-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1100;
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 8px;
+    padding: calc(10px + env(safe-area-inset-bottom, 0px)) 12px  calc(10px + env(safe-area-inset-bottom, 0px));
+    background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(10,10,10,0.92) 25%, rgba(10,10,10,0.98) 100%);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.mobile-cta-primary {
+    background: var(--gradient-pravesh);
+    color: var(--text-primary);
+    border: none;
+    border-radius: 14px;
+    padding: 12px 16px;
+    font-weight: 800;
+    letter-spacing: 0.2px;
+    box-shadow: var(--shadow-dramatic);
+}
+
+.mobile-cta-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.12);
+    color: var(--text-primary);
+    background: rgba(255,255,255,0.06);
+    text-decoration: none;
+    font-weight: 700;
+}
+
+@media (min-width: 768px) {
+    .mobile-cta-bar { display: none; }
+}
+
+/* Keep content clear of sticky CTA on small screens */
+@media (max-width: 767px) {
+    body {
+        padding-bottom: calc(var(--mobile-cta-height, 84px) + env(safe-area-inset-bottom, 0px));
+    }
 }

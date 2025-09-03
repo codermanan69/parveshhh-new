@@ -2,6 +2,9 @@
 
 // Initialize Lucide Icons
 document.addEventListener('DOMContentLoaded', function() {
+    // Set viewport CSS variable and mobile CTA height
+    setViewportVars();
+
     // Initialize Lucide icons
     if (typeof lucide !== 'undefined' && lucide && typeof lucide.createIcons === 'function') {
         lucide.createIcons();
@@ -40,7 +43,28 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Also ensure after full window load
-window.addEventListener('load', ensureContentVisibleFailsafe);
+window.addEventListener('load', function(){
+    ensureContentVisibleFailsafe();
+    setViewportVars();
+});
+
+// Maintain viewport variables on resize/orientation changes
+(function(){
+    const debounced = debounce(setViewportVars, 150);
+    window.addEventListener('resize', debounced, { passive: true });
+    window.addEventListener('orientationchange', setViewportVars, { passive: true });
+})();
+
+function setViewportVars() {
+    try {
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+        // Measure sticky bar height if present
+        const bar = document.querySelector('.mobile-cta-bar');
+        const barHeight = bar ? Math.ceil(bar.getBoundingClientRect().height) : 0;
+        document.documentElement.style.setProperty('--mobile-cta-height', `${barHeight}px`);
+    } catch (_) {}
+}
 
 function ensureContentVisibleFailsafe() {
     const curtain = document.getElementById('curtain');
